@@ -1,0 +1,40 @@
+set(CMAKE_SYSTEM_NAME Linux)
+set(CMAKE_SYSTEM_PROCESSOR arm)
+
+set(TOOLCHAIN_DIR "${CMAKE_CURRENT_LIST_DIR}/luckfox-pico/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf")
+
+get_filename_component(TOOLCHAIN_DIR ${TOOLCHAIN_DIR} ABSOLUTE)
+
+set(TOOLCHAIN_PREFIX arm-rockchip830-linux-uclibcgnueabihf)
+
+set(CMAKE_C_COMPILER   ${TOOLCHAIN_DIR}/bin/${TOOLCHAIN_PREFIX}-gcc)
+set(CMAKE_CXX_COMPILER ${TOOLCHAIN_DIR}/bin/${TOOLCHAIN_PREFIX}-g++)
+
+set(CMAKE_STRIP ${TOOLCHAIN_DIR}/bin/${TOOLCHAIN_PREFIX}-strip)
+set(CMAKE_AR    ${TOOLCHAIN_DIR}/bin/${TOOLCHAIN_PREFIX}-ar)
+set(CMAKE_RANLIB ${TOOLCHAIN_DIR}/bin/${TOOLCHAIN_PREFIX}-ranlib)
+
+set(CMAKE_SYSROOT ${TOOLCHAIN_DIR}/${TOOLCHAIN_PREFIX}/sysroot)
+
+set(ENV{PKG_CONFIG_SYSROOT_DIR} ${CMAKE_SYSROOT})
+set(PKGCFG_PATH "${CMAKE_SYSROOT}/usr/lib/pkgconfig:${CMAKE_SYSROOT}/usr/share/pkgconfig")
+
+set(ENV{PKG_CONFIG_LIBDIR} "${PKGCFG_PATH}")
+
+set(CMAKE_FIND_ROOT_PATH ${CMAKE_SYSROOT})
+
+set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
+set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
+set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
+set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY)
+
+set(ARCH_FLAGS "-march=armv7-a -mfloat-abi=hard -mfpu=neon")
+
+set(OPT_FLAGS "-Os -ffunction-sections -fdata-sections")
+
+set(SEC_FLAGS "-fstack-protector-strong -D_FORTIFY_SOURCE=2")
+
+set(CMAKE_C_FLAGS   "${ARCH_FLAGS} ${OPT_FLAGS} ${SEC_FLAGS}")
+set(CMAKE_CXX_FLAGS "${ARCH_FLAGS} ${OPT_FLAGS} ${SEC_FLAGS}")
+
+set(CMAKE_EXE_LINKER_FLAGS "-Wl,--gc-sections")

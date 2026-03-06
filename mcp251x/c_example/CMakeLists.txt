@@ -1,13 +1,9 @@
 cmake_minimum_required(VERSION 3.10)
 
-set(SDK_PATH $ENV{LUCKFOX_SDK_PATH})
-
-if (NOT SDK_PATH)
-    message(FATAL_ERROR "Please set LUCKFOX_SDK_PATH. Example:
-export LUCKFOX_SDK_PATH=/home/user/luckfox-pico")
+if(NOT DEFINED CMAKE_TOOLCHAIN_FILE)
+    set(CMAKE_TOOLCHAIN_FILE "${CMAKE_SOURCE_DIR}/../../toolchain-luckfox.cmake"
+        CACHE STRING "Toolchain file")
 endif()
-
-set(CMAKE_C_COMPILER "${SDK_PATH}/tools/linux/toolchain/arm-rockchip830-linux-uclibcgnueabihf/bin/arm-rockchip830-linux-uclibcgnueabihf-gcc")
 
 project(c_example C)
 
